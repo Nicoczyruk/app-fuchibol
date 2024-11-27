@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="./static/css/style.css">
+  <!-- Enlace al archivo CSS de Flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+  <!-- Enlace al archivo JS de Flatpickr -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+<body>
+  <section>
+    <span></span>
+    <!-- Background Effect -->
+<section> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> 
+    <!-- Login Form -->
+    <div class="signin" id="loginForm" style="display: block;">
+      <div class="content">
+          <h2>Ingrese su DNI</h2>
+          <form action="/login" method="POST" class="form">
+              <div class="inputBox">
+                  <input type="text" name="dni" required>
+                  <i>DNI</i>
+              </div>
+              <div class="inputBox">
+                  <input type="submit" value="Ingresar">
+              </div>
+          </form>
+          <div class="links">
+              <a href="#" onclick="showSignup()">¿No tiene una cuenta? Registrarse</a>
+          </div>
+      </div>
+  </div>
+    
+
+    <!-- Signup Form -->
+    <div class="signin" id="signupTypeSelection" style="display: none;">
+      <div class="content">
+          <h2>Seleccione el tipo de usuario</h2>
+          <div class="tipo-usuario">
+              <button type="button" onclick="showRegistrationForm('jugador')" class="tipo-btn">Jugador</button>
+              <button type="button" onclick="showRegistrationForm('dt')" class="tipo-btn">Director Técnico</button>
+              <button type="button" onclick="showRegistrationForm('encargado')" class="tipo-btn">Encargado</button>
+              <button type="button" onclick="showRegistrationForm('arbitro')" class="tipo-btn">Árbitro</button>
+          </div>
+          <div class="links">
+              <a href="#" onclick="showLogin()">Ya tengo una cuenta</a>
+          </div>
+      </div>
+  </div>
+    
+    <div class="signin" id="signupForm" style="display: none;">
+      <div class="content">
+        <h2>Registrarse</h2>
+        <form action="/register" method="POST" class="form">
+          <input type="hidden" name="tipo" id="tipoSeleccionado">
+    
+          <!-- Campos comunes -->
+          <div class="inputBox">
+            <input type="text" name="dni" required>
+            <i>DNI</i>
+          </div>
+          <div class="inputBox">
+            <input type="text" name="nombre" required>
+            <i>Nombre</i>
+          </div>
+          <div class="inputBox">
+            <input type="text" name="apellido" required>
+            <i>Apellido</i>
+          </div>
+          <div class="inputBox">
+          <input type="text" name="fecha_nacimiento" id="fecha_nacimiento" placeholder="AAAA-MM-DD" required>
+          <label id="fecha_label">Fecha de Nacimiento</label>
+        </div>
+          <div class="inputBox">
+            <input type="text" name="direccion" required>
+            <i>Dirección</i>
+          </div>
+          <div class="inputBox">
+            <input type="text" name="telefono" required>
+            <i>Teléfono</i>
+          </div>
+    
+          <!-- Campos específicos -->
+          <div id="extraFields" style="margin-top: 20px;"></div>
+    
+          <div class="inputBox">
+            <input type="submit" value="Registrarse">
+          </div>
+        </form>
+        <div class="links">
+          <a href="#" onclick="showTypeSelection()">Volver</a>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      function showRegistrationForm(type) {
+        // Guardar el tipo seleccionado
+        document.getElementById('tipoSeleccionado').value = type;
+    
+        // Mostrar campos específicos según el tipo
+        const container = document.getElementById('extraFields');
+        container.innerHTML = ''; // Limpiar campos previos
+    
+        if (type === 'jugador') {
+          container.innerHTML = `
+            <div class="inputBox">
+              <input type="text" name="nro_socio" maxlength="4" required>
+              <i>Nro Socio</i>
+            </div>
+            <div class="inputBox">
+              <input type="text" name="url_foto" required>
+              <i>URL Foto</i>
+            </div>
+          `;
+        } else if (type === 'dt') {
+          container.innerHTML = `
+            <div class="inputBox">
+              <input type="text" name="experiencia" required>
+              <i>Experiencia</i>
+            </div>
+          `;
+        } else if (type === 'encargado') {
+          container.innerHTML = `
+            <div class="inputBox">
+              <input type="number" name="anios_experiencia" required>
+              <i>Años de Experiencia</i>
+            </div>
+          `;
+        } else if (type === 'arbitro') {
+          container.innerHTML = `
+            <div class="inputBox">
+              <input type="text" name="nivel_experiencia" required>
+              <i>Nivel de Experiencia</i>
+            </div>
+            <div class="inputBox">
+            <label for="certificacion" style="color: #ddd; font-size: 0.9em;">Tiene Certificación</label>
+            <select name="tiene_certificacion" id="certificacion">
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+          `;
+        }
+    
+        // Cambiar a la vista del formulario
+        document.getElementById('signupTypeSelection').style.display = 'none';
+        document.getElementById('signupForm').style.display = 'block';
+      }
+    
+      function showTypeSelection() {
+        // Volver a la selección del tipo
+        document.getElementById('signupForm').style.display = 'none';
+        document.getElementById('signupTypeSelection').style.display = 'block';
+      }
+    </script>
+  
+  <script>
+    
+    function showSignup() {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('signupTypeSelection').style.display = 'block'; 
+      document.getElementById('signupForm').style.display = 'none'; 
+    }
+
+    function showLogin() {
+      document.getElementById('loginForm').style.display = 'block'; 
+      document.getElementById('signupTypeSelection').style.display = 'none'; 
+      document.getElementById('signupForm').style.display = 'none'; 
+    }
+    
+  </script>
+</body>
+</html>

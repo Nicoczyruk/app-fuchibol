@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+*
+{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Quicksand', sans-serif;
+}
+
+body 
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #000;
+}
+
+section 
+{
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+
+section::before 
+{
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(#000, #0f0, #000);
+  animation: animate 5s linear infinite;
+}
+
+@keyframes animate 
+{
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+section span 
+{
+  position: relative;
+  display: block;
+  width: calc(6.25vw - 2px);
+  height: calc(6.25vw - 2px);
+  background: #181818;
+  z-index: 2;
+  transition: 1.5s;
+}
+
+section span:hover 
+{
+  background: #0f0;
+  transition: 0s;
+}
+
+/* Contenedor principal del formulario */
+section .signin
+{
+  position: absolute;
+  width: 350px; /* Ancho fijo */
+  background: #222;  
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px; /* Reducido para menor altura */
+  border-radius: 4px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+  max-height: 90vh; /* Limita el máximo de altura al 90% de la ventana */
+  overflow-y: auto; /* Permite desplazarse si es necesario */
+}
+
+/* Contenido del formulario */
+section .signin .content 
+{
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px; /* Reducido desde 40px */
+}
+
+/* Encabezado del formulario */
+section .signin .content h2 
+{
+  font-size: 1.8em; /* Reducido desde 2em */
+  color: #0f0;
+  text-transform: uppercase;
+  margin-bottom: 10px; /* Espacio reducido debajo */
+}
+
+/* Campos del formulario */
+section .signin .content .form 
+{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Reducido desde 25px */
+}
+
+section .signin .content .form .inputBox
+{
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px; /* Reducido para menor altura general */
+}
+
+/* Estilo de los campos */
+section .signin .content .form .inputBox input 
+{
+  position: relative;
+  width: 100%;
+  background: #333;
+  border: none;
+  outline: none;
+  padding: 15px 10px; /* Reducido desde 25px */
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.9em; /* Reducido desde 1em */
+}
+
+/* Etiquetas de los campos */
+section .signin .content .form .inputBox i 
+{
+  position: absolute;
+  left: 0;
+  padding: 10px 10px; /* Reducido desde 15px */
+  font-style: normal;
+  color: #aaa;
+  transition: 0.5s;
+  pointer-events: none;
+}
+
+.signin .content .form .inputBox input:focus ~ i,
+.signin .content .form .inputBox input:valid ~ i
+{
+  transform: translateY(-7.5px);
+  font-size: 0.8em;
+  color: #fff;
+}
+
+/* Botones de enviar */
+.signin .content .form .inputBox input[type="submit"]
+{
+  padding: 10px;
+  background: #0f0;
+  color: #000;
+  font-weight: 600;
+  font-size: 1.2em; /* Reducido desde 1.35em */
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+/* Botones de selección de tipo */
+.tipo-usuario {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Reducido desde 15px */
+}
+
+.tipo-btn {
+  background: #444;
+  color: #fff;
+  border: none;
+  padding: 10px; /* Reducido desde 15px */
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em; /* Reducido desde 1.2em */
+  font-weight: 600;
+  transition: 0.3s;
+  text-align: center;
+}
+
+.tipo-btn:hover {
+  background: #0f0;
+  color: #000;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 900px)
+{
+  section span 
+  {
+    width: calc(10vw - 2px);
+    height: calc(10vw - 2px);
+  }
+}
+
+@media (max-width: 600px)
+{
+  section span 
+  {
+    width: calc(20vw - 2px);
+    height: calc(20vw - 2px);
+  }
+
+  .signin {
+    width: 90%; 
+    max-height: 85vh; 
+  }
+}
+
+/* Estilos para el select */
+select {
+  width: 100%; /* Asegura que ocupe todo el ancho disponible */
+  padding: 15px 10px; /* Añade espacio dentro del campo */
+  border-radius: 4px;
+  background: #333;
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.9em; /* Mismo tamaño que los otros campos */
+  margin-top: 5px;
+}
+
+/* Estilo de las opciones */
+select option {
+  background: #333;
+  color: #fff;
+}
+
+/* Alineación de la etiqueta y select */
+.inputBox {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  color: #ddd;
+  font-size: 0.9em;
+  margin-bottom: 5px; /* Espacio entre el texto y el select */
+}
+
+
