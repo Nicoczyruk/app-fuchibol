@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Bienvenido, {{ user[1] }}</h1>
+    <div class="details">
+      <h2>Detalles generales</h2>
+      <p><strong>DNI:</strong> {{ user[0] }}</p>
+      <p><strong>Nombre Completo:</strong> {{ user[1] }} {{ user[2] }}</p>
+      <p><strong>Fecha de Nacimiento:</strong> {{ user[3] }}</p>
+      <p><strong>Edad:</strong> {{ edad }}</p> <!-- Nueva línea -->
+      <p><strong>Dirección:</strong> {{ user[-2] }}</p>
+      <p><strong>Teléfono:</strong> {{ user[-1] }}</p>
+    </div>
+    <div class="specific-details">
+      <h2>Detalles específicos</h2>
+      {% if user[4] == 'Jugador' %}
+        <p><strong>Número de Socio:</strong> {{ user[5] }}</p>
+        <p><strong>Categoria:</strong> {{ user[7] }}</p>
+        <p><strong>URL Foto:</strong> <a href="{{ user[6] }}" target="_blank">Ver Foto</a></p>
+      {% elif user[4] == 'DirectorTecnico' %}
+        <p><strong>Experiencia:</strong> {{ user[8] }}</p>
+        <button id="crearEquipoBtn">Crear Equipo</button>
+    <div id="crearEquipoForm" style="display: none;">
+      <h3>Formulario de Creación de Equipo</h3>
+      <form method="POST" action="/crear_equipo">
+        <input type="hidden" name="dni_director" value="{{ user[0] }}">
+        <div>
+          <label for="nombreEquipo">Nombre del Equipo:</label>
+          <input type="text" id="nombreEquipo" name="nombreEquipo" required>
+        </div>
+        <div>
+          <label for="categoria">Categoría:</label>
+          <select id="categoria" name="categoria" required>
+            {% for cat in categorias %}
+              <option value="{{ cat.id }}">{{ cat.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <label for="division">División:</label>
+          <select id="division" name="division" required>
+            {% for div in divisiones %}
+              <option value="{{ div.codigoDiv }}">{{ div.nombreDivision }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit">Crear</button>
+      </form>
+    </div>
+      {% elif user[4] == 'Encargado' %}
+        <p><strong>Años de Experiencia:</strong> {{ user[10] }}</p>
+      {% elif user[4] == 'Arbitro' %}
+        <p><strong>Nivel de Experiencia:</strong> {{ user[11] }}</p>
+        <p><strong>Tiene Certificación:</strong> {{ "Sí" if user[12] else "No" }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('crearEquipoBtn').addEventListener('click', function () {
+      const form = document.getElementById('crearEquipoForm');
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    });
+
+
+    document.querySelector('#crearEquipoForm form').addEventListener('submit', function (event) {
+    event.preventDefault(); // Evitar recarga de página
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    fetch('/crear_equipo', {
+        method: 'POST',
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error); // Mostrar error si ya tiene un equipo
+            } else {
+                alert('Equipo creado exitosamente');
+                window.location.reload(); // Recargar página para reflejar cambios
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Ocurrió un error al intentar crear el equipo');
+        });
+});
+  </script>
+
+</body>
+</html>

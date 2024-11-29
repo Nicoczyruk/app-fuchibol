@@ -1,0 +1,134 @@
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #222;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  h1 {
+    text-align: center;
+    color: #0f0;
+  }
+  
+  .details, .specific-details {
+    margin-top: 20px;
+  }
+  
+  p {
+    font-size: 1.1em;
+    margin: 10px 0;
+  }
+  
+  strong {
+    color: #0f0;
+  }
+  
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: #000; /* Color de respaldo si la imagen no se carga */
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    background-image: url('/static/img/soccer-ball-pattern.png'); /* Ruta de la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-size: cover; /* Ajusta la imagen para que cubra toda la pantalla */
+    background-position: center; /* Centra la imagen en el medio de la pantalla */
+    background-attachment: fixed; /* Fija el fondo al scroll */
+}
+
+/* Botón de crear equipo */
+#crearEquipoBtn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    color: #fff;
+    background: linear-gradient(90deg, #0f0, #007b00);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 255, 0, 0.3);
+  }
+  
+  #crearEquipoBtn:hover {
+    background: linear-gradient(90deg, #007b00, #0f0);
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 255, 0, 0.5);
+  }
+  
+  /* Formulario de crear equipo */
+  #crearEquipoForm {
+    display: none; /* Oculto por defecto */
+    margin-top: 20px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid #0f0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 255, 0, 0.3);
+  }
+  
+  /* Inputs del formulario */
+  #crearEquipoForm input,
+  #crearEquipoForm select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 1em;
+    border: 1px solid #0f0;
+    border-radius: 5px;
+    background-color: #222;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  #crearEquipoForm input:focus,
+  #crearEquipoForm select:focus {
+    border-color: #007b00;
+  }
+  
+  /* Botón del formulario */
+  #crearEquipoForm button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.2em;
+    color: #fff;
+    background: linear-gradient(90deg, #0f0, #007b00);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 255, 0, 0.3);
+  }
+  
+  #crearEquipoForm button:hover {
+    background: linear-gradient(90deg, #007b00, #0f0);
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 255, 0, 0.5);
+  }
+  
+  /* Etiquetas del formulario */
+  #crearEquipoForm label {
+    font-size: 1em;
+    color: #0f0;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  /* Transiciones generales */
+  #crearEquipoForm,
+  #crearEquipoBtn {
+    transition: all 0.3s ease-in-out;
+  }
+  

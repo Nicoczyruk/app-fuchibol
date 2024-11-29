@@ -250,4 +250,28 @@ label {
   margin-bottom: 5px; /* Espacio entre el texto y el select */
 }
 
+.alert {
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.alert.success {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.alert.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
 

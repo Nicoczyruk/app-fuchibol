@@ -12,11 +12,15 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body>
+  <div id="alert-container" style="display: none;">
+    <p id="alert-message"></p>
+  </div>
   <section>
     <span></span>
     <!-- Background Effect -->
 <section> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> 
-    <!-- Login Form -->
+    
+  <!-- Login Form -->
     <div class="signin" id="loginForm" style="display: block;">
       <div class="content">
           <h2>Ingrese su DNI</h2>
@@ -96,61 +100,77 @@
         </div>
       </div>
     </div>
-    
+  
     <script>
       function showRegistrationForm(type) {
-        // Guardar el tipo seleccionado
         document.getElementById('tipoSeleccionado').value = type;
-    
-        // Mostrar campos específicos según el tipo
+
         const container = document.getElementById('extraFields');
-        container.innerHTML = ''; // Limpiar campos previos
-    
+        container.innerHTML = '';
+
         if (type === 'jugador') {
-          container.innerHTML = `
-            <div class="inputBox">
-              <input type="text" name="nro_socio" maxlength="4" required>
-              <i>Nro Socio</i>
-            </div>
-            <div class="inputBox">
-              <input type="text" name="url_foto" required>
-              <i>URL Foto</i>
-            </div>
-          `;
+            container.innerHTML = `
+                <div class="inputBox">
+                    <input type="text" name="url_foto" required>
+                    <i>URL Foto</i>
+                </div>
+                <div class="inputBox">
+                    <label for="equipo">Selecciona un equipo:</label>
+                    <select name="equipo" id="equipo" required>
+                        <option value="">-- Selecciona un equipo --</option>
+                    </select>
+                </div>
+            `;
+
+            // Fetch equipos para el menú desplegable
+            fetch('/register?tipo=jugador')
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById('equipo');
+                    data.forEach(equipo => {
+                        const option = document.createElement('option');
+                        option.value = equipo.id;
+                        option.textContent = equipo.nombre;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar los equipos:', error);
+                });
         } else if (type === 'dt') {
-          container.innerHTML = `
-            <div class="inputBox">
-              <input type="text" name="experiencia" required>
-              <i>Experiencia</i>
-            </div>
-          `;
+            container.innerHTML = `
+                <div class="inputBox">
+                    <input type="text" name="experiencia" required>
+                    <i>Experiencia</i>
+                </div>
+            `;
         } else if (type === 'encargado') {
-          container.innerHTML = `
-            <div class="inputBox">
-              <input type="number" name="anios_experiencia" required>
-              <i>Años de Experiencia</i>
-            </div>
-          `;
+            container.innerHTML = `
+                <div class="inputBox">
+                    <input type="number" name="anios_experiencia" required>
+                    <i>Años de Experiencia</i>
+                </div>
+            `;
         } else if (type === 'arbitro') {
-          container.innerHTML = `
-            <div class="inputBox">
-              <input type="text" name="nivel_experiencia" required>
-              <i>Nivel de Experiencia</i>
-            </div>
-            <div class="inputBox">
-            <label for="certificacion" style="color: #ddd; font-size: 0.9em;">Tiene Certificación</label>
-            <select name="tiene_certificacion" id="certificacion">
-              <option value="si">Sí</option>
-              <option value="no">No</option>
-            </select>
-          </div>
-          `;
+            container.innerHTML = `
+                <div class="inputBox">
+                    <input type="text" name="nivel_experiencia" required>
+                    <i>Nivel de Experiencia</i>
+                </div>
+                <div class="inputBox">
+                    <label for="certificacion" style="color: #ddd; font-size: 0.9em;">Tiene Certificación</label>
+                    <select name="tiene_certificacion" id="certificacion">
+                        <option value="si">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+            `;
         }
-    
+
         // Cambiar a la vista del formulario
         document.getElementById('signupTypeSelection').style.display = 'none';
         document.getElementById('signupForm').style.display = 'block';
-      }
+    }
     
       function showTypeSelection() {
         // Volver a la selección del tipo
@@ -173,6 +193,34 @@
       document.getElementById('signupForm').style.display = 'none'; 
     }
     
+  </script>
+
+  <script>
+   // Evento para manejar el registro con AJAX
+document.querySelector('#signupForm form').addEventListener('submit', function (event) {
+  event.preventDefault(); // Prevenir el envío estándar del formulario
+
+  const form = event.target;
+  const formData = new FormData(form);
+
+  fetch('/register', {
+      method: 'POST',
+      body: formData,
+  })
+      .then(response => response.json())
+      .then(data => {
+          if (data.error) {
+              alert(data.error); // Muestra una alerta nativa con el mensaje de error
+          } else if (data.success) {
+              alert(data.success); // Muestra una alerta nativa con el mensaje de éxito
+              window.location.href = '/login'; // Redirigir si el registro fue exitoso
+          }
+      })
+      .catch(err => {
+          alert('Error inesperado. Por favor, inténtelo de nuevo.');
+          console.error(err);
+      });
+});
   </script>
 </body>
 </html>
