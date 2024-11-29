@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, url_for
+from flask import Blueprint, render_template, request, jsonify, redirect, url_for, session
 from app import get_db_connection
 from datetime import datetime
 
@@ -176,6 +176,16 @@ def dashboard(dni):
         WHERE DNI = ?
     """
     
+    query_equipo = """
+        SELECT NroEquipo, nombre
+        FROM Equipo
+        WHERE DNI_DT_DIRIGE_FK = ?
+    """
+    query_torneos = """
+        SELECT idTorneo, nombreTorneo
+        FROM Torneo
+    """
+    
     categorias_query = "SELECT idCategoria, Nombre FROM Categoria"
     divisiones_query = "SELECT codigoDiv, nombreDivision FROM Division"
     
@@ -183,6 +193,14 @@ def dashboard(dni):
         cursor = conn.cursor()
         cursor.execute(query, (dni,))
         user = cursor.fetchone()
+
+        # Obtener equipo asociado al Director Técnico
+        cursor.execute(query_equipo, (dni,))
+        equipo = cursor.fetchone()
+
+        # Obtener torneos disponibles
+        cursor.execute(query_torneos)
+        torneos = [{"id": row[0], "nombre": row[1]} for row in cursor.fetchall()]
 
         cursor.execute(categorias_query)
         categorias = [{"id": row[0], "nombre": row[1]} for row in cursor.fetchall()]
@@ -212,7 +230,9 @@ def dashboard(dni):
             user=user,
             categorias=categorias,
             divisiones=divisiones,
-            edad=edad,  # Pasa la edad calculada al frontend
+            equipo=equipo,
+            torneos=torneos,
+            edad=edad,  
             title="Dashboard"
         )
     else:
@@ -257,3 +277,93 @@ def crear_equipo():
     except Exception as e:
             print(f"Error al crear equipo: {e}")
             return jsonify({"error": "Ocurrió un error al crear el equipo"}), 500
+        
+
+@main.route('/crear_torneo', methods=['POST'])
+def crear_torneo():
+    print(request.form)
+    try:
+        # Verificar y capturar los datos del formulario
+        required_fields = ['nombre_torneo', 'fecha_inicio', 'fecha_fin', 'inscripcion_inicio', 'inscripcion_fin', 'dni_encargado']
+        for field in required_fields:
+            if field not in request.form or not request.form[field]:
+                return f"Falta el campo {field}", 400
+
+        nombre_torneo = request.form['nombre_torneo']
+        fecha_inicio = request.form['fecha_inicio']
+        fecha_fin = request.form['fecha_fin']
+        inscripcion_inicio = request.form['inscripcion_inicio']
+        inscripcion_fin = request.form['inscripcion_fin']
+        dni_encargado = request.form['dni_encargado']
+
+        # Convertir fechas
+        try:
+            fecha_inicio = datetime.strptime(fecha_inicio, '%Y-%m-%dT%H:%M')
+            fecha_fin = datetime.strptime(fecha_fin, '%Y-%m-%dT%H:%M')
+            inscripcion_inicio = datetime.strptime(inscripcion_inicio, '%Y-%m-%dT%H:%M')
+            inscripcion_fin = datetime.strptime(inscripcion_fin, '%Y-%m-%dT%H:%M')
+        except ValueError as ve:
+            return f"Formato de fecha inválido: {ve}", 400
+
+        # Preparar consulta SQL
+        query = """
+        INSERT INTO Torneo (nombreTorneo, fechaInicioRealizacion, fechaFinRealizacion, PeriodoInscripcionInicio, PeriodoInscripcionFin, DNIEncargado_habilita)
+        VALUES (?, ?, ?, ?, ?, ?)
+        """
+
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(query, (nombre_torneo, fecha_inicio, fecha_fin, inscripcion_inicio, inscripcion_fin, dni_encargado))
+            conn.commit()
+
+        return "Torneo creado exitosamente", 200
+
+    except Exception as e:
+        print(f"Error al crear torneo: {e}")
+        return "Error al crear torneo", 500
+
+
+
+@main.route("/inscribir_equipo", methods=["POST"])
+def inscribir_equipo():
+    data = request.form
+    torneo_id = data.get("torneo")
+    dni_director = data.get("dni_director")
+    equipo_id = data.get("equipo")
+
+    if not equipo_id:
+        return jsonify({"error": "No tienes un equipo asociado para inscribir"}), 400
+
+    # Consulta para verificar si el equipo ya tiene un torneo asignado
+    check_torneo_query = """
+        SELECT idTorneo_ParticipaFK
+        FROM Equipo
+        WHERE NroEquipo = ?
+    """
+
+    # Actualizar la tabla Equipo con el torneo seleccionado
+    query_equipo = """
+        UPDATE Equipo
+        SET idTorneo_ParticipaFK = ?
+        WHERE NroEquipo = ?
+    """
+    try:
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+
+            # Verificar si el equipo ya tiene un torneo asignado
+            cursor.execute(check_torneo_query, (equipo_id,))
+            torneo_asignado = cursor.fetchone()
+
+            if torneo_asignado and torneo_asignado[0]:
+                return jsonify({"error": "El equipo ya está inscrito en un torneo"}), 400
+
+            # Asignar el equipo al nuevo torneo
+            cursor.execute(query_equipo, (torneo_id, equipo_id))
+            conn.commit()
+
+        return jsonify({"success": "Equipo inscrito al torneo exitosamente"}), 200
+    except Exception as e:
+        print(f"Error al inscribir equipo: {e}")
+        return jsonify({"error": "Error al inscribir equipo"}), 500
+

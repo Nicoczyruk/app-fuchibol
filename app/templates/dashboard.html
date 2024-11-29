@@ -54,8 +54,57 @@
         <button type="submit">Crear</button>
       </form>
     </div>
+    <div>
+      {% if equipo %}
+        <p><strong>Equipo Asociado:</strong> {{ equipo[1] }}</p>
+        <button id="inscribirEquipoBtn">Inscribir Equipo a Torneo</button>
+        <div id="inscribirEquipoForm" style="display: none;">
+          <form method="POST" action="/inscribir_equipo">
+            <input type="hidden" name="equipo" value="{{ equipo[0] }}">
+            <div>
+              <label for="torneo">Seleccionar Torneo:</label>
+              <select id="torneo" name="torneo" required>
+                {% for torneo in torneos %}
+                  <option value="{{ torneo.id }}">{{ torneo.nombre }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <button type="submit">Inscribir</button>
+          </form>
+        </div>
+      {% else %}
+        <p>No tienes un equipo asociado. Crea un equipo para poder inscribirlo a un torneo.</p>
+      {% endif %}
+    </div>
       {% elif user[4] == 'Encargado' %}
         <p><strong>Años de Experiencia:</strong> {{ user[10] }}</p>
+        <button id="crearTorneoBtn">Crear Torneo</button>
+        <div id="crearTorneoForm" style="display: none;">
+          <form method="POST" action="/crear_torneo">
+            <input type="hidden" name="dni_encargado" value="{{ user[0] }}">
+            <div>
+              <label for="nombreTorneo">Nombre del Torneo:</label>
+              <input type="text" id="nombreTorneo" name="nombre_torneo" required>
+            </div>
+            <div>
+              <label for="fechaInicio">Fecha de Inicio:</label>
+              <input type="datetime-local" id="fechaInicio" name="fecha_inicio" required>
+            </div>
+            <div>
+              <label for="fechaFin">Fecha de Fin:</label>
+              <input type="datetime-local" id="fechaFin" name="fecha_fin" required>
+            </div>
+            <div>
+              <label for="inscripcionInicio">Inicio de Inscripción:</label>
+              <input type="datetime-local" id="inscripcionInicio" name="inscripcion_inicio" required>
+            </div>
+            <div>
+              <label for="inscripcionFin">Fin de Inscripción:</label>
+              <input type="datetime-local" id="inscripcionFin" name="inscripcion_fin" required>
+            </div>
+            <button type="submit">Habilitar Torneo</button>
+          </form>
+        </div>
       {% elif user[4] == 'Arbitro' %}
         <p><strong>Nivel de Experiencia:</strong> {{ user[11] }}</p>
         <p><strong>Tiene Certificación:</strong> {{ "Sí" if user[12] else "No" }}</p>
@@ -94,7 +143,81 @@
             alert('Ocurrió un error al intentar crear el equipo');
         });
 });
+
   </script>
 
+  <script>
+    document.getElementById('crearTorneoBtn').addEventListener('click', function () {
+      const form = document.getElementById('crearTorneoForm');
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    });
+  </script>
+    
+    <script>
+      document.getElementById('inscribirEquipoBtn').addEventListener('click', function () {
+        const form = document.getElementById('inscribirEquipoForm');
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+      });
+      </script>
+
+      <script>
+        document.querySelector('#crearTorneoForm form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Evitar recarga de página
+    
+            const form = event.target;
+            const formData = new FormData(form);
+    
+            fetch('/crear_torneo', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.text()) // Convertimos la respuesta a texto
+                .then(data => {
+                    if (data.includes('exitosamente')) {
+                        alert('Torneo creado exitosamente');
+                        window.location.reload(); // Recargar página para reflejar cambios
+                    } else {
+                        alert(`Error al crear el torneo: ${data}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Ocurrió un error al intentar crear el torneo');
+                });
+        });
+    </script>
+
+    <script>
+      document.querySelector('#inscribirEquipoForm form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Evitar recarga de página
+    
+        const form = event.target;
+        const formData = new FormData(form);
+    
+        fetch('/inscribir_equipo', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Mostrar alerta de éxito
+                    alert(data.success);
+                    window.location.reload(); // Recargar página para reflejar cambios
+                } else if (data.error) {
+                    // Mostrar alerta de error
+                    alert(`Error: ${data.error}`);
+                } else {
+                    // Si no se recibe ni éxito ni error
+                    alert('Ocurrió un error inesperado. Inténtalo nuevamente.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ocurrió un error al intentar inscribir el equipo');
+            });
+    });
+  </script>
+  
 </body>
 </html>
